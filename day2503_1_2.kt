@@ -35,7 +35,7 @@ fun main() {
 // print solution for part 2
     println("*******************************")
     println("Solution for part2")
-    println("   $solution2 is the total output joltage")  //173084479160332 is to high   
+    println("   $solution2 is the total output joltage")
     println()
 
     t1 = System.currentTimeMillis() - t1
