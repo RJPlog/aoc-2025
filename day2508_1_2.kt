@@ -7,8 +7,12 @@ data class junctionBox(
 )
 
 fun playGround(in1: Int): Int{
-    var puzzleInput = listOf("162,817,812", "57,618,57", "906,360,560", "592,479,940", "352,342,300", "466,668,158", "542,29,236", "431,825,988", "739,650,466", "52,470,668", "216,146,977", "819,987,18", "117,168,530", "805,96,715", "346,949,466", "970,615,88", "941,993,340", "862,61,35", "984,92,344", "425,690,689")
-	var numberOfPairs = 10  // set to 1000 for puzzle input
+	
+	var puzzleInput = mutableListOf<String>()
+	File("day2508_puzzle_input.txt").forEachLine {
+		puzzleInput.add(it)	
+	}
+	var numberOfPairs = puzzleInput.size
 
     // caculate distances
     var distances = mutableListOf<junctionBox>()
@@ -24,7 +28,6 @@ fun playGround(in1: Int): Int{
         }
     }
     distances.sortBy{it.dist}
-    //println("distance: $distances.size")
     
     // built up circuits
     var circuits = mutableListOf<MutableList<Int>>()
@@ -32,7 +35,6 @@ fun playGround(in1: Int): Int{
     for (i in 0..numberOfPairs-1) {
         circuits.add(distances[i].boxes)
     }
-    //println("circuits: $circuits")
     
     var i = 0
     while(i < circuits.size) {
@@ -46,7 +48,6 @@ fun playGround(in1: Int): Int{
                 newCircuit.addAll(circuit.toMutableList())
                 newCircuit = newCircuit.distinct().toMutableList()
                 if (newCircuit.distinct().size != circuit.size + circuits[j].size) {
-                    //println("same circuit $circuit / ${circuits[j]}  -> $newCircuit")
                     circuits[i] = newCircuit
                     circuit = newCircuit
                     circuits[j] = mutableListOf<Int>()
@@ -60,14 +61,17 @@ fun playGround(in1: Int): Int{
         i+=1
     }
     circuits.sortByDescending {it.size}
-    //println(circuits)
 
 	return circuits[0].size * circuits[1].size * circuits[2].size
 }
 
 fun playGround2(in1: Int): Int{
-    var puzzleInput = listOf("162,817,812", "57,618,57", "906,360,560", "592,479,940", "352,342,300", "466,668,158", "542,29,236", "431,825,988", "739,650,466", "52,470,668", "216,146,977", "819,987,18", "117,168,530", "805,96,715", "346,949,466", "970,615,88", "941,993,340", "862,61,35", "984,92,344", "425,690,689")
-	val numberOfPairs = 900 
+	
+	var puzzleInput = mutableListOf<String>()
+	File("day2508_puzzle_input.txt").forEachLine {
+		puzzleInput.add(it)	
+	}
+	val numberOfPairs = 6000 
     
     // caculate distances
     var distances = mutableListOf<junctionBox>()
@@ -83,14 +87,12 @@ fun playGround2(in1: Int): Int{
         }
     }
     distances.sortBy{it.dist}
-    //println("distance: $distances.size")
     
     // built up circuits
     var boxes = mutableListOf<MutableList<Int>>()
     for (i in 0..distances.size-1) {
         boxes.add(distances[i].boxes)
     }
-    //println("boxes $boxes")
     
     var circuits = mutableListOf<MutableList<Int>>()
     var newCircuits = mutableListOf<MutableList<Int>>()
@@ -112,7 +114,6 @@ fun playGround2(in1: Int): Int{
         }
         if (posMatchCount.size == 0) newCircuits.add(boxes[i])
        	else if (posMatchCount.size > 1) {
-            //println("add big path: ${posMatchCount}")
             for (k in 1..posMatchCount.size-1) {
                 newCircuits[posMatchCount[0]].addAll(newCircuits[posMatchCount[k]])
                 newCircuits[posMatchCount[k]] = mutableListOf<Int>() 
@@ -122,7 +123,6 @@ fun playGround2(in1: Int): Int{
         circuits.clear()
         newCircuits.forEach {
             if (it.size >= puzzleInput.size) {
-                //println("${puzzleInput.size} ${boxes[i]} $it ${puzzleInput[boxes[i][0]]}, ${puzzleInput[boxes[i][1]]}")
                 val A = puzzleInput[boxes[i][0]].split(",")[0].toInt()
                 val B = puzzleInput[boxes[i][1]].split(",")[0].toInt()
                 return A*B
@@ -133,16 +133,14 @@ fun playGround2(in1: Int): Int{
         }
         newCircuits.clear()
     }
-    println("reached size ${circuits.sortedByDescending {it.size}[0].size}")
 	return -1
 }
-
 
 fun main() {
     
     var t1 = System.currentTimeMillis()
  
-/*/  solution for part 1
+//  solution for part 1
 	val solution1 = playGround(1)
     println("*******************************")
     println("--- Day 8: Playground ---")
@@ -150,7 +148,6 @@ fun main() {
     println("Solution for part1")
     println("   you get $solution1 if you multiply together the sizes of the three largest circuits")
     println()
-    */
 
 //  solution for part 2
 	val solution2 = playGround2(2)
