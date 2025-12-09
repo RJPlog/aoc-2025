@@ -8,16 +8,10 @@ data class Line(
     val yMax: Long
 )
 
-fun intersect(in1: Line, in2: Line): Int{
+fun intersect(in1: Pair<Long,Long>, in2: Line): Int{
     // nice idea, but does not do the trick, still some other cases are possible which are not covered here
-    // point xMin, yMin
-    if ((in1.xMin < in2.xMax && in1.xMin > in2.xMin) && (in1.yMin < in2.yMax && in1.yMin > in2.yMin)) return 1
-    // point xMax, yMin
-    if ((in1.xMax < in2.xMax && in1.xMin > in2.xMin) && (in1.yMin < in2.yMax && in1.yMin > in2.yMin)) return 1
-    // point xMin, yMax
-    if ((in1.xMin < in2.xMax && in1.xMin > in2.xMin) && (in1.yMax < in2.yMax && in1.yMin > in2.yMin)) return 1
-    // point xMax, yMax
-    if ((in1.xMax < in2.xMax && in1.xMin > in2.xMin) && (in1.yMax < in2.yMax && in1.yMin > in2.yMin)) return 1
+    if ((in1.first < in2.xMax && in1.first > in2.xMin) && (in1.second < in2.yMax && in1.second > in2.yMin)) return 1
+
     return 0
 }
 
@@ -65,9 +59,9 @@ fun movieTheater(in1: Int): Long {
                     //println(currentTile)
                     // check if current rectangle has any crossing with outline (does not cover a rectangle outside!)
                     var intersectionDetected = 0
-                    outLines.forEach {
-                        //println("   $it")
-                        intersectionDetected += intersect(it, currentTile)
+                    puzzleInput.split("\n").forEach {
+                        println("   $it")
+                        intersectionDetected += intersect(Pair(it.split(",")[0].toLong(), it.split(",")[1].toLong()), currentTile)
                     }
                     if (intersectionDetected == 0) {
                     maxRectangle = volume
@@ -80,8 +74,6 @@ fun movieTheater(in1: Int): Long {
 	return maxRectangle
 }
 
-
-
 fun main() {
     
     var t1 = System.currentTimeMillis()
@@ -92,7 +84,7 @@ fun main() {
     println("--- Day 9: Movie Theater ---")
     println("*******************************")
     println("Solution for part1")
-    println("   The largest rectancle is $solution1.")  // 6833708340 is to high
+    println("   The largest rectancle is $solution1.")
     println() 
 
 //  solution for part 2
