@@ -86,7 +86,7 @@ fun factory2(in1: Int): Int {
         joltageLevel.add(it.substringAfter("{").dropLast(1))
         buttonWiring.add(it.substringAfter("] ").substringBefore(" {"))
     }
-    //println(indicatorLights)
+    //println(joltageLevel)
     //println(buttonWiring)
     
     var totalButtonsPressed = 0
@@ -99,14 +99,15 @@ fun factory2(in1: Int): Int {
         permutationList.clear()
 		//println("xx ${buttonWiring[i]} ${buttonWiring[i].split(" ").size}")
         permutations(currentButtonList.size-1,"", 5)
-        //println(permutationList[0])     
+        //println(permutationList[permutationList.size-1])     
              
         // calculate lightbar result for each permutation
         
         var minResult = 0
         permutationList.forEach {
-        //listOf("111000","010102", "000011").forEach{
-           var switchResult = MutableList(joltageLevel[i].replace(",","").length) {0}
+        //listOf("5051").forEach{
+           var switchResult = MutableList(joltageLevel[i].split(",").size) {0}
+			//println("x $switchResult ${joltageLevel[i]} ----   ${joltageLevel[i].replace(",","")}")
            for(j in 0..it.length -1) {
                val nPressed = it[j].toString().toInt()
                currentButtonList[j].split(",").forEach {
@@ -115,9 +116,9 @@ fun factory2(in1: Int): Int {
                }
                
            }
-           //var  result = switchResult.map {it -> if (it % 2 == 0) '.' else '#'}.joinToString("")
-           //println("$it    ${switchResult.joinToString(",")} ${joltageLevel[i]}")
-           if (switchResult.joinToString(",") == joltageLevel[i]) {
+           var  result = switchResult.joinToString(",")
+           //println("$it    ${switchResult.joinToString(",")} ${joltageLevel[i]} - $result")
+           if (result == joltageLevel[i]) {
                		if (minResult == 0) {
                         minResult = it.fold(0) {a, n -> a + n.toString().toInt()}
                     } else {
@@ -143,14 +144,14 @@ fun main() {
     
     var t1 = System.currentTimeMillis()
  
-//  solution for part 1
+/*/  solution for part 1
 	val solution1 = factory(1)
     println("*******************************")
     println("--- Day 10: Factory ---")
     println("*******************************")
     println("Solution for part1")
     println("   $solution1")
-    println()
+    println() */
 
 //  solution for part 2
 	val solution2 = factory2(2)
