@@ -30,9 +30,9 @@ fun factory(in1: Int): Int {
     
     var totalButtonsPressed = 0
     for (i in 0..indicatorLights.size-1) {
-        
+        println(i)
         var currentButtonList = buttonWiring[i].split(" ").map {it.drop(1).dropLast(1)}
-        println("${indicatorLights[i]} $currentButtonList")
+        println("  ${indicatorLights[i]} $currentButtonList")
         
         // create all permutations
         permutationList.clear()
@@ -69,8 +69,9 @@ fun factory(in1: Int): Int {
            
            
         }
+		if (minResult == 0) println("xxxx")
         totalButtonsPressed += minResult
-        println("totalButtonsPressed $totalButtonsPressed")
+        println("   totalButtonsPressed $totalButtonsPressed")
 
     }
     
