@@ -62,15 +62,15 @@ fun movieTheater(in1: Int): Long {
                	 	val minYRec = minOf(redTiles[i].second, redTiles[j].second)
                 	val maxYRec = maxOf(redTiles[i].second, redTiles[j].second)
                     val currentTile = Line(minXRec, maxXRec,minYRec, maxYRec)
-                    //println(currentTile)
                     // check if current rectangle has any crossing with outline (does not cover a rectangle outside!)
                     var intersectionDetected = 0
-                    allTiles.forEach {
-                        //println("   $it")
-                        intersectionDetected += intersect(it, currentTile)
+                    for (k in 0..allTiles.size-1) {
+                        intersectionDetected += intersect(allTiles[k], currentTile)
+                        if (intersectionDetected > 0) break
                     }
                     if (intersectionDetected == 0) {
-                    maxRectangle = volume
+                    	println("current max volume @ i: $i, j: $j -> $volume")
+                    	maxRectangle = volume
                     }    
                 } else
                 maxRectangle = volume
@@ -97,7 +97,7 @@ fun main() {
 	val solution2 = movieTheater(2)
     println("*******************************")
     println("Solution for part2")        
-    println("   The largest rectancle with only red and green tiles is $solution2.")  // 17794166775 -> to high
+    println("   The largest rectancle with only red and green tiles is $solution2.")
     println() 
 
     t1 = System.currentTimeMillis() - t1
