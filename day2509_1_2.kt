@@ -32,17 +32,23 @@ fun movieTheater(in1: Int): Long {
     }
     
     // create list of outlines for part2
-    //if (in1 == 2) {
-    var outLines = mutableListOf<Line>()
+    var allTiles = mutableListOf<Pair<Long,Long>>()
         redTiles.windowed(2) {
             val minX = minOf(it[0].first, it[1].first)
             val maxX = maxOf(it[0].first, it[1].first)
             val minY = minOf(it[0].second, it[1].second)
             val maxY = maxOf(it[0].second, it[1].second)
-            outLines.add(Line(minX, maxX, minY, maxY))
+            for (x in minX..maxX) {
+                for (y in minY..maxY) {
+                    allTiles.add(Pair(x,y))
+                }
+            }
         }
-        outLines.add(Line(minOf(redTiles[0].first, redTiles[redTiles.size-1].first), maxOf(redTiles[0].first, redTiles[redTiles.size-1].first), minOf(redTiles[0].second, redTiles[redTiles.size-1].second), maxOf(redTiles[0].second, redTiles[redTiles.size-1].second)))
-    //}
+    for (x in minOf(redTiles[0].first, redTiles[redTiles.size-1].first)..maxOf(redTiles[0].first, redTiles[redTiles.size-1].first)) {
+        for (y in minOf(redTiles[0].second, redTiles[redTiles.size-1].second)..maxOf(redTiles[0].second, redTiles[redTiles.size-1].second)) {
+            allTiles.add(Pair(x,y))
+        }
+    }  
   
     var maxRectangle = 0L
     for (i in 0..redTiles.size-1) {
@@ -59,9 +65,9 @@ fun movieTheater(in1: Int): Long {
                     //println(currentTile)
                     // check if current rectangle has any crossing with outline (does not cover a rectangle outside!)
                     var intersectionDetected = 0
-                    puzzleInput.split("\n").forEach {
-                        println("   $it")
-                        intersectionDetected += intersect(Pair(it.split(",")[0].toLong(), it.split(",")[1].toLong()), currentTile)
+                    allTiles.forEach {
+                        //println("   $it")
+                        intersectionDetected += intersect(it, currentTile)
                     }
                     if (intersectionDetected == 0) {
                     maxRectangle = volume
