@@ -17,28 +17,28 @@ fun permutations(in1: Int, in2: String) {
 }
 
 fun factory(in1: Int): Int {
-    val puzzleInput = """[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}"""
-    
-    
+       
     val indicatorLights = mutableListOf<String>()
     val buttonWiring = mutableListOf<String>()
-    puzzleInput.split("\n").forEach{
+	
+		File("day2510_puzzle_input.txt").forEachLine {
         indicatorLights.add(it.substringBefore("]").drop(1))
         buttonWiring.add(it.substringAfter("] ").substringBefore(" {"))
     }
-    println(indicatorLights)
-    println(buttonWiring)
+    //println(indicatorLights)
+    //println(buttonWiring)
     
     var totalButtonsPressed = 0
     for (i in 0..indicatorLights.size-1) {
         
         var currentButtonList = buttonWiring[i].split(" ").map {it.drop(1).dropLast(1)}
-        println(currentButtonList)
+        println("${indicatorLights[i]} $currentButtonList")
         
         // create all permutations
         permutationList.clear()
-        permutations(buttonWiring[i].split(",").size,"")
-        //println(permutationList)     
+		//println("xx ${buttonWiring[i]} ${buttonWiring[i].split(" ").size}")
+        permutations(currentButtonList.size-1,"")
+        //println(permutationList[0])     
              
         // calculate lightbar result for each permutation
         
