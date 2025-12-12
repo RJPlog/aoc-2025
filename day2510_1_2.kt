@@ -140,6 +140,50 @@ fun factory2(in1: Int): Int {
 	return totalButtonsPressed
 }
 
+fun factory3(in1: Int): Int {
+       
+    val joltageLevel = mutableListOf<String>()
+    val buttonWiring = mutableListOf<String>()
+    
+    var puzzleInput = """[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
+[...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}
+[.###.#] (0,1,2,3,4) (0,3,4) (0,1,2,4,5) (1,2) {10,11,11,5,10,5}"""
+	
+		puzzleInput.split("\n").forEach {
+        joltageLevel.add(it.substringAfter("{").dropLast(1))
+        buttonWiring.add(it.substringAfter("] ").substringBefore(" {"))
+    }
+    println(joltageLevel)
+    println(buttonWiring)
+    println()
+    
+    val buttonPressList = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o")
+
+    for (i in 0..joltageLevel.size-1) {
+        var equationMap = mutableMapOf<List<String>,Int>()
+        println("looking at ${joltageLevel[i]}, ${buttonWiring[i]}")
+        for (j in 0..joltageLevel[i].split(",").size-1) {
+            
+            var equation = mutableListOf<String>()
+            for (k in 0..buttonWiring[i].split(" ").size-1) {
+                //println("  cecking ${buttonWiring[i].split(" ")[k]} if contains $j")
+                if (buttonWiring[i].split(" ")[k].contains(j.toString())) {
+                    //println("it  ${buttonWiring[i].split(" ")[k]} , j $j")
+                    equation.add(buttonPressList[k])
+                    //println("eqation    $equation")
+                }
+            }
+            equationMap.put(equation.distinct(), joltageLevel[i].split(",")[j].toInt())
+        }
+        println("  $equationMap")
+        
+        println()
+    }
+
+    
+	return 1
+}
+
 fun main() {
     
     var t1 = System.currentTimeMillis()
