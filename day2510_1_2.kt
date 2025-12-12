@@ -145,17 +145,15 @@ fun factory3(in1: Int): Int {
     val joltageLevel = mutableListOf<String>()
     val buttonWiring = mutableListOf<String>()
     
-    var puzzleInput = """[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
-[...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}
-[.###.#] (0,1,2,3,4) (0,3,4) (0,1,2,4,5) (1,2) {10,11,11,5,10,5}"""
+    var puzzleInput = """[#...#..##.] (0,1,2,5,7,8,9) (0,1,2,3,6,7,8) (2,3,4,5,6) (0,2,4,5,6,7,8,9) (3,5) (0,1,2,4,5,7,9) (0,2,3,6,7,8) (0,1,5,6,8,9) (0,2,3,5,7) (0,1,4,7,8) (2,3,5,6,7) {90,46,86,53,31,94,57,80,66,58}"""
 	
 		puzzleInput.split("\n").forEach {
         joltageLevel.add(it.substringAfter("{").dropLast(1))
         buttonWiring.add(it.substringAfter("] ").substringBefore(" {"))
     }
-    println(joltageLevel)
-    println(buttonWiring)
-    println()
+    //println(joltageLevel)
+    //println(buttonWiring)
+    //println()
     
     val buttonPressList = listOf("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o")
 
@@ -177,13 +175,36 @@ fun factory3(in1: Int): Int {
         }
         println("  $equationMap")
         
+        // start determine values for unknown variables a, b, c, ....
+        // easiest: equations hold only one variable
+        // try to reduce equation system step by step
+        // start with equation with lowest value
+        
+        // das hier erzeugt soweit möglich minimale Equations. Geht aber nicht zwingend bis 1. -> wenn sich nichts mehr ändert, einfach die einzelwerte setzen?
+        for (m in 0..15) {
+            for (x in 0..equationMap.size-1) {
+                val keyA = equationMap.entries.elementAt(x).key
+                for (y in 0..equationMap.size-1) {
+                    if (x != y) {
+                        var keyB = equationMap.entries.elementAt(y).key
+                        if (keyA.containsAll(keyB)) {
+                            println("$keyA - $keyB = ${keyA-keyB}")
+                            equationMap.put(keyA-keyB, equationMap.entries.elementAt(x).value-equationMap.entries.elementAt(y).value)
+                        }
+                    }
+                    	
+                }
+            }
+        }
+        // and now???
+        println(equationMap)
+        
         println()
     }
 
     
 	return 1
 }
-
 fun main() {
     
     var t1 = System.currentTimeMillis()
