@@ -78,18 +78,15 @@ hhh: out"""
     puzzleInput.split("\n").forEach {
             puzzleInputMap.put(it.split(": ")[0], it.split(": ")[1])
     }
-
-	println("puzzleInputMap $puzzleInputMap")
     
 	var pathList = mutableListOf<Node>()
 	pathList.add(Node("svr",1,0))
 
 	var pathSearch = true
-    var n = 0
     while (pathSearch) {
+        
         pathSearch = false
-        n += 1
-        println(n)
+
         for (i in 0..pathList.size-1) {
             val id = pathList[i].id
             if (id != "out") {
@@ -97,16 +94,16 @@ hhh: out"""
                 var reached = pathList[i].reached
                 pathList[i] = Node("",0,0)
                 puzzleInputMap.getValue(id).split(" ").forEach {
-                    if (it =="fft") reached += 1 
-                    if (it == "dac") reached += 10
-                    pathList.add(Node(it, count, reached))
+                    if (it =="dac") {pathList.add(Node(it, count, reached+1))} 
+                    else if (it == "fft") {pathList.add(Node(it, count, reached + 10))}
+                    else {pathList.add(Node(it, count, reached))}
                 }
             }
         }
         while (pathList.contains(Node("",0,0))) {
             pathList.removeAt(pathList.indexOf(Node("",0,0)))
         }
-    // now consolidate -> add all nodes with same name together, add up counts but distinguish with different types of reached (or delete the ones without reached, if you have on with has reached?)
+        // consolidation phase -> add all nodes with same name together, add up counts but distinguish with different types of reached
         var pathListMap = mutableMapOf<NodeRed,Long>()
         for (j in 0..pathList.size-1) {
             var id = pathList[j].id
@@ -129,18 +126,12 @@ hhh: out"""
         pathList.forEach {
             if (it.id != "out") pathSearch = true
         }
-    	
-	    //println(pathList)
     }
 
-    
     var result = -1L
-
-    println("xx $n")
     pathList.forEach {
         if (it.reached == 11) result = it.count
     }
-    println(pathList)
     return result
 }
 
